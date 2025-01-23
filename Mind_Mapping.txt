@@ -2,10 +2,10 @@
 01 - Create JSON object for questions.
 02 - Start creating HTML.
 03 - Add dummy data.
+04 - Create CSS.
 
 
 #---In Progress---#
-04 - Create CSS.
 05 - Fetch number of questions from JSON object.
 06 - Show questions count + questions category.
 07 - Show the number of bullets depend on questions count.
