@@ -1,16 +1,18 @@
 // Select elements
-let countSpan = document.querySelector(".quiz-app .quiz-info .count span");
+let quizApp = document.querySelector(".quiz-app");
 let difficultyLevel = document.querySelector(".quiz-app .quiz-info .difficulty-level span");
-let bullets = document.querySelector(".quiz-app .bullets");
-let bulletsSpanContainer = document.querySelector(".quiz-app .bullets .spans");
+let countdownElement = document.querySelector(".quiz-app .quiz-info .countdown");
+let countSpan = document.querySelector(".quiz-app .quiz-info .count span");
 let quizArea = document.querySelector(".quiz-app .quiz-area");
 let answersArea = document.querySelector(".quiz-app .answers-area");
 let userAnswer = document.querySelector(".quiz-app .answers-area .answer input:checked");
 let submitBtn = document.querySelector(".quiz-app .submit-btn");
-let resultsContainer = document.querySelector(".quiz-app .results");
-let countdownElement = document.querySelector(".quiz-app .quiz-info .countdown");
-let quizDegree = document.querySelector(".quiz-app .results span:nth-child(3)");
-let currentDegree = document.querySelector(".quiz-app .results span:nth-child(2)");
+let bullets = document.querySelector(".quiz-app .bullets");
+let bulletsSpanContainer = document.querySelector(".quiz-app .bullets .spans");
+let resultWindow = document.querySelector(".result");
+let currentRate = document.querySelector(".result span:nth-of-type(1)");
+let currentDegree = document.querySelector(".result span:nth-of-type(2)");
+let quizDegree = document.querySelector(".result span:nth-of-type(3)");
 
 // Set Options
 let currentIndex = 0;
@@ -26,13 +28,13 @@ function getQuestionsJsonFile() {
         if (myRequest.readyState === 4 && myRequest.status === 200) {
             let questionsObject = JSON.parse(this.responseText);
             let questionsCount = questionsObject.length;
-            quizDegree.innerHTML = questionsCount;
-            currentDegree.innerHTML = rightAnswersCount;
+            // quizDegree.innerHTML = questionsCount;
+            // currentDegree.innerHTML = rightAnswersCount;
             createBullets(questionsCount)
 
             // Show question content
             showQuestionData(questionsObject[currentIndex], questionsCount, questionsObject[currentIndex].question_level);
-
+            
             
             // Click on submit button
             submitBtn.onclick = () => {
@@ -51,15 +53,17 @@ function getQuestionsJsonFile() {
                     
                     // Show next question and answers
                     showQuestionData(questionsObject[currentIndex], questionsCount, questionsObject[currentIndex].question_level);
-
-                    // Handle bullets 
-                    handleBullets();
-                }      
+                } 
+                else {
+                    // Show result window
+                    showResult(questionsCount);
+                }   
             }
         }
     }
 }
 getQuestionsJsonFile()
+
 
 // Create bullets
 function createBullets(num) {
@@ -71,6 +75,7 @@ function createBullets(num) {
         bulletsSpanContainer.appendChild(bullet);
     }
 }
+
 
 function showQuestionData(obj, count, level) {
     if (currentIndex < count) {
@@ -104,6 +109,7 @@ function showQuestionData(obj, count, level) {
     }
 }
 
+
 function checkAnswer(rightAnswer) {
     let answers = document.getElementsByName("question");
     let answerChoosed;
@@ -118,9 +124,8 @@ function checkAnswer(rightAnswer) {
     let questionBullet = document.querySelector(`.quiz-app .bullets .spans span:nth-child(${currentIndex})`);
     if (answerChoosed === rightAnswer) {
         rightAnswersCount++;
-        currentDegree.innerHTML = rightAnswersCount;
         questionBullet.classList.add("right-answer");
-    } else if (answerChoosed != undefined) {
+    } else {
         questionBullet.classList.add("wrong-answer");
     }
 
@@ -128,3 +133,25 @@ function checkAnswer(rightAnswer) {
     questionBullet.classList.remove("on")
 }
 
+
+function showResult (questionsCount) {
+    if (currentIndex === questionsCount) {
+        resultWindow.style.display = "block";
+        quizApp.style.pointerEvents = "none";
+        quizApp.style.filter = "blur(5px)"
+
+        if (rightAnswersCount >= (questionsCount - 1) && rightAnswersCount <= questionsCount) {
+            currentRate.innerHTML = "Perfect&#129395;";
+            currentRate.className = "perfect";
+        } else if (rightAnswersCount >= (questionsCount / 2 )) {
+            currentRate.innerHTML = "Good&#128079;";
+            currentRate.className = "good";
+        } else {
+            currentRate.innerHTML = "Bad&#128529;";
+            currentRate.className = "bad";
+        }
+
+        currentDegree.textContent = rightAnswersCount;
+        quizDegree.textContent = questionsCount;
+    }
+}
