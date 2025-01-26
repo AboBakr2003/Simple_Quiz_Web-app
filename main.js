@@ -35,7 +35,7 @@ function getQuestionsJsonFile() {
             let questionsCount = questionsObject.length;
             
             // CountDown timer 
-            countDown(15, questionsCount);
+            countDown(45, questionsCount);
             
             
             createBullets(questionsCount)
@@ -64,7 +64,7 @@ function getQuestionsJsonFile() {
 
                     // CountDown timer 
                     clearInterval(countdownInterval);
-                    countDown(15, questionsCount);
+                    countDown(45, questionsCount);
                     countdown.classList.remove("end-seconds");
                 } 
                 else {
