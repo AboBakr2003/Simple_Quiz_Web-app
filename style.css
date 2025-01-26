@@ -18,7 +18,6 @@ body {
         display: flex;
         flex-direction: row;
         border-radius: 10px;
-        /* justify-content: center; */
         background-color: white;
         & > * {
             padding: 15px;
@@ -27,6 +26,10 @@ body {
         }
         & > *:not(:last-child) {
             border-right: 1px solid #ddd;
+        }
+        
+        & .end-seconds {
+            color: red;
         }
     }
     & .quiz-area {
@@ -156,5 +159,17 @@ body {
     }
     & span.perfect {
         color: #36e100;
+    }
+    & .close-btn {
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #0075ff;
+        transition: 0.2s;
+        cursor: pointer;
+        &:hover {
+            background-color: #0059b3;
+        }
     }
 }
